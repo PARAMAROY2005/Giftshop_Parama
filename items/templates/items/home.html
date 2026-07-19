@@ -1,0 +1,516 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}PARAMA'S ARTISTRY | Crafting Memories Into Beautiful Gifts{% endblock %}
+
+{% block content %}
+<!-- Premium Hero Section -->
+<header class="hero">
+    <div class="hero-content">
+        <p class="eyebrow" style="color: var(--accent); margin-bottom: 12px; font-size: 0.9rem; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">✦ LUXURY GIFT BOUTIQUE ✦</p>
+        <h1 style="color: white; font-size: 3rem; line-height: 1.2; margin-bottom: 20px; font-family: var(--font-heading); text-shadow: 0 2px 10px rgba(0,0,0,0.3);">Crafting Memories Into Beautiful Gifts</h1>
+        <p style="font-size: 1.1rem; color: #E8E5F0; margin-bottom: 35px; text-shadow: 0 1px 4px rgba(0,0,0,0.2);">Handmade • Customized • Crafted With Love</p>
+        
+        <!-- Search bar in Hero -->
+        <form method="GET" action="{% url 'home' %}" class="hero-search-form">
+            <input type="text" name="search" placeholder="Search for luxury bouquets, frames, boxes..." value="{{ request.GET.search|default:'' }}" style="flex-grow: 1; border: none; background: transparent; padding: 12px 20px; color: white; font-family: var(--font-body); font-size: 0.95rem; outline: none;" aria-label="Search inputs">
+            <button type="submit" class="btn btn-accent" style="border-radius: 30px; padding: 10px 24px; flex-shrink: 0; position: relative; z-index: 10;">Search</button>
+        </form>
+
+        <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+            <a href="#shop" class="btn btn-accent">Shop Now</a>
+            <button onclick="openGiftFinder()" class="btn btn-secondary" style="color: white; border-color: white;">Explore Collection</button>
+        </div>
+    </div>
+</header>
+
+<!-- Main Container -->
+<div id="shop" style="margin-top: 80px;"></div>
+
+<!-- Occasions Filter Section -->
+<section class="section" id="occasions" style="background: linear-gradient(to bottom, #FAF9F6 0%, #F6F4EE 100%);">
+    <div class="section-heading">
+        <p class="eyebrow">Occasion Collections</p>
+        <h2>Gifts Curated for Every Milestone</h2>
+    </div>
+    
+    <div class="category-pills">
+        <button class="pill active" onclick="filterCategory('all')">All Collections</button>
+        <button class="pill" onclick="filterCategory('personalized')">Personalized Art</button>
+        <button class="pill" onclick="filterCategory('anniversary')">Anniversaries</button>
+        <button class="pill" onclick="filterCategory('birthday')">Birthdays</button>
+        <button class="pill" onclick="filterCategory('wedding')">Weddings</button>
+        <button class="pill" onclick="filterCategory('festival')">Festivals</button>
+    </div>
+</section>
+
+<!-- Shop Products Grid -->
+<section class="section" style="padding-top: 20px;">
+    <div class="section-heading">
+        <p class="eyebrow">Our Boutique Catalog</p>
+        <h2>Select an Exquisite Present</h2>
+    </div>
+    
+    <div class="products-grid">
+        {% for gift in gifts %}
+        <article class="product-card" data-category="{{ gift.category|lower }}" data-personalized="{% if gift.is_personalized %}true{% else %}false{% endif %}">
+            <div class="card-img-container">
+                <img src="{% static gift.image %}" alt="{{ gift.name }}">
+                <span class="card-badge">{{ gift.badge }}</span>
+                <a href="{% url 'add_to_wishlist' gift.id %}" class="card-wishlist" title="Add to Wishlist">
+                    ❤
+                </a>
+            </div>
+            <div class="card-info">
+                <span class="card-category">{{ gift.category }}</span>
+                <h3>{{ gift.name }}</h3>
+                
+                <div class="rating-container">
+                    <div class="rating-stars">
+                        {% for i in gift.rating_stars %}★{% endfor %}
+                    </div>
+                    <span class="rating-value">{{ gift.rating }}</span>
+                    <span style="color: var(--text-light); font-size: 0.8rem;">({{ gift.rating_count }})</span>
+                </div>
+                
+                <div class="card-price-row">
+                    <span class="card-price">₹ {{ gift.price }}</span>
+                </div>
+                
+                <div class="card-actions">
+                    <button class="btn btn-outline btn-small" onclick="openQuickView('{{ gift.id }}', '{{ gift.name }}', '{% static gift.image %}', '₹ {{ gift.price }}', '{{ gift.details }}', '{{ gift.category }}', '{{ gift.rating }}')" style="flex-grow: 1; padding: 10px;">Quick View</button>
+                    <a href="{% url 'add_to_cart' gift.id %}" class="btn btn-primary btn-small" style="padding: 10px 16px;">
+                        🛒 Buy
+                    </a>
+                </div>
+            </div>
+        </article>
+        {% empty %}
+        <div style="grid-column: 1/-1; text-align: center; padding: 60px 0; background: white; border-radius: var(--border-radius-lg); box-shadow: var(--shadow-sm);">
+            <div style="font-size: 3rem; margin-bottom: 20px; color: var(--accent);">✦</div>
+            <h3 style="margin-bottom: 10px;">No Gifts Found</h3>
+            <p style="color: var(--text-muted);">Try searching for other keywords, or view our default catalog.</p>
+            <a href="{% url 'home' %}" class="btn btn-primary" style="margin-top: 20px;">Reset Catalog</a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Why Choose Us -->
+<section class="section" style="background: rgba(81, 60, 151, 0.02); border-top: 1px solid rgba(81, 60, 151, 0.04); border-bottom: 1px solid rgba(81, 60, 151, 0.04);">
+    <div class="section-heading">
+        <p class="eyebrow">The Parama's ARTISTRY Promise</p>
+        <h2>Why Gifting With Us Feels Extraordinary</h2>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
+        <div class="glass-card" style="padding: 30px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+            <div style="width: 60px; height: 60px; border-radius: 50%; background: rgba(212, 175, 55, 0.1); border: 1.5px solid var(--accent); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: var(--accent-dark); margin-bottom: 20px;">🎁</div>
+            <h3 style="font-size: 1.25rem; font-family: var(--font-body); font-weight: 600; margin-bottom: 12px; color: var(--primary-dark);">Royal Velvet Wrapping</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Every gift is hand-wrapped in royal purple card-boxes with custom silk ribbons and gold stamp seals for a breath-taking first impression.</p>
+        </div>
+        <div class="glass-card" style="padding: 30px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+            <div style="width: 60px; height: 60px; border-radius: 50%; background: rgba(212, 175, 55, 0.1); border: 1.5px solid var(--accent); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: var(--accent-dark); margin-bottom: 20px;">✦</div>
+            <h3 style="font-size: 1.25rem; font-family: var(--font-body); font-weight: 600; margin-bottom: 12px; color: var(--primary-dark);">Handcrafted & Personalized</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">From custom ribbons and polaroids to bespoke calendars, we offer detailed customization to make the present deeply personal.</p>
+        </div>
+        <div class="glass-card" style="padding: 30px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+            <div style="width: 60px; height: 60px; border-radius: 50%; background: rgba(212, 175, 55, 0.1); border: 1.5px solid var(--accent); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: var(--accent-dark); margin-bottom: 20px;">⚡</div>
+            <h3 style="font-size: 1.25rem; font-family: var(--font-body); font-weight: 600; margin-bottom: 12px; color: var(--primary-dark);">Insured Speed Delivery</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Fragile-packed shipments shipped via high-priority air logistics. Fully tracked, arriving directly at their doorstep in perfect shape.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Recently Viewed Section -->
+<section class="section" id="recently-viewed-section" style="display: none; background: rgba(183, 110, 121, 0.01); border-top: 1px solid rgba(183, 110, 121, 0.04);">
+    <div class="section-heading">
+        <p class="eyebrow">Your Browsing History</p>
+        <h2>Recently Viewed</h2>
+    </div>
+    <div class="products-grid" id="recently-viewed-grid">
+        <!-- Filled dynamically by JavaScript -->
+    </div>
+</section>
+
+<!-- Customer Reviews Section -->
+<section class="section">
+    <div class="section-heading">
+        <p class="eyebrow">Loved by Buyers</p>
+        <h2>Bespoke Testimonials</h2>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px;">
+        <div class="glass-card" style="padding: 35px; border-left: 4px solid var(--accent);">
+            <div style="color: var(--accent); font-size: 1.2rem; margin-bottom: 12px;">★★★★★</div>
+            <p style="font-style: italic; color: var(--text-charcoal); margin-bottom: 20px;">"The custom giftbox was absolutely stunning. The packaging felt like high-end French jewelry. The polaroids inside were sharp, and my partner was moved to tears."</p>
+            <div>
+                <strong style="color: var(--primary-dark); font-size: 1rem; display: block;">Ananya Sen</strong>
+                <span style="font-size: 0.8rem; color: var(--text-light);">Verified Purchaser</span>
+            </div>
+        </div>
+        <div class="glass-card" style="padding: 35px; border-left: 4px solid var(--accent);">
+            <div style="color: var(--accent); font-size: 1.2rem; margin-bottom: 12px;">★★★★★</div>
+            <p style="font-style: italic; color: var(--text-charcoal); margin-bottom: 20px;">"Ordered the calendar and rose bouquet for my mother's birthday. The ribbon roses look hyper-realistic and are sitting on her dining table. Delivery was fast and wrapped securely."</p>
+            <div>
+                <strong style="color: var(--primary-dark); font-size: 1rem; display: block;">Rohan Verma</strong>
+                <span style="font-size: 0.8rem; color: var(--text-light);">Verified Purchaser</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Interactive Quick View Modal -->
+<div id="quickview-modal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(26, 17, 51, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: var(--transition-smooth);">
+    <div class="glass-card" style="position: relative; width: 90%; max-width: 800px; padding: 0; overflow: hidden; border-radius: var(--border-radius-lg); animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+        
+        <!-- Close Button -->
+        <button onclick="closeQuickView()" style="position: absolute; top: 20px; right: 20px; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.05); border: none; font-size: 1.5rem; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;">&times;</button>
+        
+        <div class="detail-grid" style="margin: 0; gap: 0;">
+            <!-- Product Image Left -->
+            <div style="height: 450px; background: #fafafa;">
+                <img id="qv-image" src="" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            
+            <!-- Product Info Right -->
+            <div style="padding: 40px; display: flex; flex-direction: column; height: 450px; justify-content: center;">
+                <span id="qv-category" class="card-category" style="margin-bottom: 8px; display: block;">CATEGORY</span>
+                <h2 id="qv-name" style="font-size: 1.8rem; margin-bottom: 12px; font-family: var(--font-heading); color: var(--primary-dark);">Product Name</h2>
+                
+                <div class="rating-container" style="margin-bottom: 20px;">
+                    <span style="color: var(--accent); font-size: 1.1rem;">★★★★★</span>
+                    <span id="qv-rating" class="rating-value" style="font-size: 0.95rem;">4.9</span>
+                </div>
+                
+                <p id="qv-details" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 30px; flex-grow: 1; overflow-y: auto;">Detailed specifications of this gift item go here...</p>
+                
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-top: auto; border-top: 1px solid rgba(81, 60, 151, 0.08); padding-top: 20px;">
+                    <span id="qv-price" class="card-price" style="font-size: 1.6rem;">₹ 0.00</span>
+                    <a id="qv-buy-btn" href="#" class="btn btn-primary" style="padding: 12px 30px;">
+                        🛒 Add to Cart
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @keyframes slideUp {
+        from { transform: translateY(50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+</style>
+
+<!-- Gift Finder Quiz Modal -->
+<div id="quiz-modal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(26, 17, 51, 0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 2500; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: var(--transition-smooth);">
+    <div class="glass-card" style="position: relative; width: 90%; max-width: 550px; padding: 45px; text-align: center; border-radius: var(--border-radius-lg); box-shadow: var(--shadow-lg); background: rgba(255, 255, 255, 0.98);">
+        <button onclick="closeGiftFinder()" style="position: absolute; top: 20px; right: 20px; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.05); border: none; font-size: 1.5rem; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;">&times;</button>
+        
+        <div id="quiz-step-1">
+            <span style="font-size: 3rem; display: block; margin-bottom: 15px;">💐</span>
+            <h2 style="font-family: var(--font-heading); color: var(--primary-dark); font-size: 1.8rem; margin-bottom: 8px;">Find the Perfect Gift</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 30px;">Step 1: What is the occasion?</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <button class="pill" onclick="selectQuizOccasion('anniversary')">Anniversary</button>
+                <button class="pill" onclick="selectQuizOccasion('birthday')">Birthday</button>
+                <button class="pill" onclick="selectQuizOccasion('flowers')">Flowers & Romance</button>
+                <button class="pill" onclick="selectQuizOccasion('personalized')">Customized Gift</button>
+            </div>
+        </div>
+
+        <div id="quiz-step-2" style="display: none;">
+            <span style="font-size: 3rem; display: block; margin-bottom: 15px;">💰</span>
+            <h2 style="font-family: var(--font-heading); color: var(--primary-dark); font-size: 1.8rem; margin-bottom: 8px;">Budget Range</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 30px;">Step 2: What is your preferred budget?</p>
+            <div style="display: grid; grid-template-columns: 1fr; gap: 12px;">
+                <button class="pill" onclick="selectQuizBudget(500)">Under ₹500</button>
+                <button class="pill" onclick="selectQuizBudget(1000)">₹500 - ₹1000</button>
+                <button class="pill" onclick="selectQuizBudget(2000)">Above ₹1000</button>
+            </div>
+        </div>
+
+        <div id="quiz-step-3" style="display: none;">
+            <span style="font-size: 3.5rem; display: block; margin-bottom: 15px;">🎉</span>
+            <h2 style="font-family: var(--font-heading); color: var(--primary-dark); font-size: 1.8rem; margin-bottom: 8px;">Your Match</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 25px;">We have filtered the best options for you!</p>
+            <div id="quiz-results-container" style="margin-bottom: 25px;">
+                <!-- Product Match Row dynamically filled -->
+            </div>
+            <button class="btn btn-primary" onclick="applyQuizFilter()" style="border-radius: 30px; padding: 10px 24px; font-weight:600;">View in Catalog</button>
+        </div>
+    </div>
+</div>
+
+<!-- Glassmorphic Newsletter Popup -->
+<div id="newsletter-popup" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(26, 17, 51, 0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 3000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: var(--transition-smooth);">
+    <div class="glass-card" style="position: relative; width: 90%; max-width: 500px; padding: 45px; text-align: center; border-radius: var(--border-radius-lg); box-shadow: var(--shadow-lg); background: rgba(255, 255, 255, 0.98);">
+        <button onclick="closeNewsletterPopup()" style="position: absolute; top: 20px; right: 20px; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.05); border: none; font-size: 1.5rem; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;">&times;</button>
+        <span style="font-size: 3.5rem; display: block; margin-bottom: 15px;">🎁</span>
+        <h2 style="font-family: var(--font-heading); color: var(--primary-dark); font-size: 1.8rem; margin-bottom: 12px;">Exclusive Welcome Gift</h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 25px; line-height: 1.6;">Subscribe to the PARAMA'S ARTISTRY newsletter and receive an instant <strong>10% Discount Code</strong> for your first order!</p>
+        <form onsubmit="handleNewsletterSubmit(event)">
+            <div class="form-group" style="margin-bottom: 16px;">
+                <input type="email" id="popup-email" class="form-control" placeholder="Enter your email address" required style="border-radius: 30px; padding: 12px 24px; text-align: center;">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; border-radius: 30px; padding: 12px 24px; font-weight: 600;">Reveal My Discount</button>
+        </form>
+        <div id="coupon-reveal" style="display: none; margin-top: 20px; padding: 16px; background: rgba(183, 110, 121, 0.08); border: 1.5px dashed var(--primary); border-radius: var(--border-radius-md);">
+            <p style="color: var(--text-charcoal); font-size: 0.9rem; margin-bottom: 6px;">Use coupon code at checkout:</p>
+            <strong style="color: var(--primary-dark); font-size: 1.4rem; letter-spacing: 2px;">ARTISTRY10</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Category Filtering Script & Quick View Script -->
+<script>
+    function filterCategory(category) {
+        // Toggle active pill styling
+        const pills = document.querySelectorAll('.category-pills .pill');
+        pills.forEach(pill => {
+            pill.classList.remove('active');
+            if (pill.getAttribute('onclick').includes(category)) {
+                pill.classList.add('active');
+            }
+        });
+
+        // Filter cards
+        const cards = document.querySelectorAll('.products-grid .product-card');
+        cards.forEach(card => {
+            const cardCat = card.getAttribute('data-category');
+            const cardPers = card.getAttribute('data-personalized');
+            
+            if (category === 'all') {
+                card.style.display = 'flex';
+            } else if (category === 'personalized') {
+                card.style.display = (cardPers === 'true') ? 'flex' : 'none';
+            } else {
+                card.style.display = (cardCat.includes(category.toLowerCase())) ? 'flex' : 'none';
+            }
+        });
+    }
+
+    function openQuickView(id, name, image, price, details, category, rating) {
+        document.getElementById('qv-name').innerText = name;
+        document.getElementById('qv-image').src = image;
+        document.getElementById('qv-image').alt = name;
+        document.getElementById('qv-price').innerText = price;
+        document.getElementById('qv-details').innerText = details;
+        document.getElementById('qv-category').innerText = category;
+        document.getElementById('qv-rating').innerText = rating;
+        
+        // Dynamic URL for Buy button
+        document.getElementById('qv-buy-btn').href = `/cart/add/${id}/`;
+
+        const modal = document.getElementById('quickview-modal');
+        modal.style.opacity = '1';
+        modal.style.visibility = 'visible';
+    }
+
+    function closeQuickView() {
+        const modal = document.getElementById('quickview-modal');
+        modal.style.opacity = '0';
+        modal.style.visibility = 'hidden';
+    }
+
+    // Close modal on background click
+    window.addEventListener('click', (e) => {
+        const modal = document.getElementById('quickview-modal');
+        if (e.target === modal) {
+            closeQuickView();
+        }
+        
+        const qm = document.getElementById('quiz-modal');
+        if (e.target === qm) {
+            closeGiftFinder();
+        }
+        
+        const np = document.getElementById('newsletter-popup');
+        if (e.target === np) {
+            closeNewsletterPopup();
+        }
+    });
+
+    // Newsletter functions
+    document.addEventListener('DOMContentLoaded', () => {
+        // Show newsletter popup after 2 seconds if not closed/submitted before
+        if (localStorage.getItem('newsletter_subscribed') !== 'true' && localStorage.getItem('newsletter_closed') !== 'true') {
+            setTimeout(() => {
+                const pop = document.getElementById('newsletter-popup');
+                pop.style.opacity = '1';
+                pop.style.visibility = 'visible';
+            }, 2000);
+        }
+
+        // Render Recently Viewed Products
+        const rvItems = JSON.parse(localStorage.getItem('recently_viewed') || '[]');
+        if (rvItems.length > 0) {
+            document.getElementById('recently-viewed-section').style.display = 'block';
+            const grid = document.getElementById('recently-viewed-grid');
+            grid.innerHTML = '';
+            rvItems.forEach(item => {
+                grid.innerHTML += `
+                <article class="product-card">
+                    <div class="card-img-container">
+                        <img src="${item.image}" alt="${item.name}">
+                    </div>
+                    <div class="card-info">
+                        <span class="card-category">${item.category}</span>
+                        <h3>${item.name}</h3>
+                        <div class="rating-container">
+                            <span class="rating-stars">★★★★★</span>
+                            <span class="rating-value">${item.rating}</span>
+                        </div>
+                        <div class="card-price-row">
+                            <span class="card-price">₹ ${item.price}</span>
+                            <div class="card-actions">
+                                <a href="/gift/${item.id}/" class="btn btn-primary btn-small">View</a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                `;
+            });
+        }
+    });
+
+    function closeNewsletterPopup() {
+        const pop = document.getElementById('newsletter-popup');
+        pop.style.opacity = '0';
+        pop.style.visibility = 'hidden';
+        localStorage.setItem('newsletter_closed', 'true');
+    }
+
+    function handleNewsletterSubmit(e) {
+        e.preventDefault();
+        document.getElementById('coupon-reveal').style.display = 'block';
+        localStorage.setItem('newsletter_subscribed', 'true');
+        setTimeout(() => {
+            closeNewsletterPopup();
+        }, 8000);
+    }
+
+    // Gift Finder Quiz Functions
+    let quizFilters = { occasion: '', budget: 0 };
+    
+    function openGiftFinder() {
+        quizFilters = { occasion: '', budget: 0 };
+        document.getElementById('quiz-step-1').style.display = 'block';
+        document.getElementById('quiz-step-2').style.display = 'none';
+        document.getElementById('quiz-step-3').style.display = 'none';
+        
+        const modal = document.getElementById('quiz-modal');
+        modal.style.opacity = '1';
+        modal.style.visibility = 'visible';
+    }
+
+    function closeGiftFinder() {
+        const modal = document.getElementById('quiz-modal');
+        modal.style.opacity = '0';
+        modal.style.visibility = 'hidden';
+    }
+
+    function selectQuizOccasion(occ) {
+        quizFilters.occasion = occ;
+        document.getElementById('quiz-step-1').style.display = 'none';
+        document.getElementById('quiz-step-2').style.display = 'block';
+    }
+
+    // Store product details temporarily for client side filter
+    const productsData = [
+        {% for gift in gifts %}
+        {
+            id: "{{ gift.id }}",
+            name: "{{ gift.name }}",
+            price: parseInt("{{ gift.price }}"),
+            image: "{% static gift.image %}",
+            category: "{{ gift.category|lower }}",
+            details: "{{ gift.details|escapejs }}",
+            rating: "{{ gift.rating }}"
+        },
+        {% endfor %}
+    ];
+
+    function selectQuizBudget(maxBudget) {
+        quizFilters.budget = maxBudget;
+        document.getElementById('quiz-step-2').style.display = 'none';
+        document.getElementById('quiz-step-3').style.display = 'block';
+        
+        // Filter products client-side
+        let matches = productsData.filter(p => {
+            // Category occasion matching
+            let catMatch = false;
+            if (quizFilters.occasion === 'anniversary') {
+                catMatch = p.category.includes('anniversary') || p.category.includes('box') || p.category.includes('rose');
+            } else if (quizFilters.occasion === 'birthday') {
+                catMatch = p.category.includes('birthday') || p.category.includes('calendar') || p.category.includes('chocolate');
+            } else if (quizFilters.occasion === 'flowers') {
+                catMatch = p.category.includes('flower') || p.category.includes('rose') || p.category.includes('chocolate');
+            } else if (quizFilters.occasion === 'personalized') {
+                catMatch = p.category.includes('custom') || p.category.includes('photo') || p.category.includes('calendar');
+            }
+            
+            // Budget matching
+            let budgetMatch = false;
+            if (quizFilters.budget === 500) {
+                budgetMatch = p.price <= 500;
+            } else if (quizFilters.budget === 1000) {
+                budgetMatch = p.price > 500 && p.price <= 1000;
+            } else {
+                budgetMatch = p.price > 1000;
+            }
+            
+            return catMatch && budgetMatch;
+        });
+
+        // If no matches, fall back to matching just budget or occasion
+        if (matches.length === 0) {
+            matches = productsData.filter(p => {
+                if (quizFilters.budget === 500) return p.price <= 500;
+                if (quizFilters.budget === 1000) return p.price > 500 && p.price <= 1000;
+                return p.price > 1000;
+            });
+        }
+
+        // Limit results to 2 matches
+        matches = matches.slice(0, 2);
+        
+        const container = document.getElementById('quiz-results-container');
+        container.innerHTML = '';
+        if (matches.length === 0) {
+            container.innerHTML = '<p style="color: var(--text-muted);">No matches found, exploring all collections is recommended.</p>';
+        } else {
+            matches.forEach(item => {
+                container.innerHTML += `
+                <div style="display: flex; gap: 15px; align-items: center; text-align: left; background: rgba(183,110,121,0.02); padding: 10px; border-radius: var(--border-radius-md); border: 1.5px solid rgba(183,110,121,0.06); margin-bottom: 10px;">
+                    <img src="${item.image}" alt="${item.name}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
+                    <div>
+                        <h4 style="font-size: 0.95rem; font-weight: 600; color: var(--primary-dark);">${item.name}</h4>
+                        <span style="font-size: 0.9rem; font-weight: 700; color: var(--primary);">₹ ${item.price}</span>
+                    </div>
+                </div>
+                `;
+            });
+        }
+    }
+
+    function applyQuizFilter() {
+        closeGiftFinder();
+        
+        // Trigger filter in page
+        if (quizFilters.occasion === 'personalized') {
+            filterCategory('personalized');
+        } else if (quizFilters.occasion === 'anniversary') {
+            filterCategory('anniversary');
+        } else if (quizFilters.occasion === 'birthday') {
+            filterCategory('birthday');
+        } else {
+            filterCategory('all');
+        }
+        
+        // Scroll to shop
+        document.getElementById('shop').scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+{% endblock %}

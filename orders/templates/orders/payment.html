@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Checkout Payment | Parama's ARTISTRY Premium{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 1200px; margin: 50px auto; padding: 0 5%; min-height: 70vh;">
+    
+    <!-- Progress Indicator -->
+    <div class="progress-steps">
+        <div class="step-item completed">
+            <div class="step-circle">✓</div>
+            <span class="step-label">Cart</span>
+        </div>
+        <div class="step-item completed">
+            <div class="step-circle">✓</div>
+            <span class="step-label">Address</span>
+        </div>
+        <div class="step-item active">
+            <div class="step-circle">3</div>
+            <span class="step-label">Payment</span>
+        </div>
+        <div class="step-item">
+            <div class="step-circle">4</div>
+            <span class="step-label">Receipt</span>
+        </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1.8fr 1.2fr; gap: 40px; align-items: start; margin-top: 40px;">
+        
+        <!-- Payment Selector (Left Column) -->
+        <div class="glass-card" style="padding: 40px;">
+            <h2 style="font-size: 1.6rem; font-family: var(--font-heading); color: var(--primary-dark); margin-bottom: 24px;">Select Payment Method</h2>
+            
+            <form method="POST" id="payment-form" style="display: flex; flex-direction: column; gap: 24px;">
+                {% csrf_token %}
+                
+                <!-- Tab Controls -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+                    <label style="border: 1.5px solid rgba(81, 60, 151, 0.15); border-radius: var(--border-radius-md); padding: 16px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; transition: var(--transition-smooth); background: white;" id="tab-card">
+                        <input type="radio" name="payment_method" value="card" checked onclick="switchTab('card')" style="display: none;">
+                        <span style="font-size: 1.5rem;">💳</span>
+                        <span style="font-weight: 600; font-size: 0.9rem; color: var(--primary-dark);">Card Payment</span>
+                    </label>
+                    
+                    <label style="border: 1.5px solid rgba(81, 60, 151, 0.15); border-radius: var(--border-radius-md); padding: 16px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; transition: var(--transition-smooth); background: white;" id="tab-upi">
+                        <input type="radio" name="payment_method" value="upi" onclick="switchTab('upi')" style="display: none;">
+                        <span style="font-size: 1.5rem;">📱</span>
+                        <span style="font-weight: 600; font-size: 0.9rem; color: var(--primary-dark);">UPI Transfer</span>
+                    </label>
+                    
+                    <label style="border: 1.5px solid rgba(81, 60, 151, 0.15); border-radius: var(--border-radius-md); padding: 16px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; transition: var(--transition-smooth); background: white;" id="tab-cod">
+                        <input type="radio" name="payment_method" value="cod" onclick="switchTab('cod')" style="display: none;">
+                        <span style="font-size: 1.5rem;">💵</span>
+                        <span style="font-weight: 600; font-size: 0.9rem; color: var(--primary-dark);">COD (Pay On Delivery)</span>
+                    </label>
+                </div>
+
+                <!-- Tab Contents -->
+                <div style="background: rgba(81, 60, 151, 0.02); padding: 24px; border-radius: var(--border-radius-md); border: 1px solid rgba(81, 60, 151, 0.06); min-height: 180px;">
+                    
+                    <!-- Card Payment Form -->
+                    <div id="form-card" style="display: flex; flex-direction: column; gap: 16px;">
+                        <div class="form-group">
+                            <label class="form-label">Cardholder Name</label>
+                            <input type="text" placeholder="e.g. Parama Mukherjee" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Card Number</label>
+                            <input type="text" placeholder="4111 2222 3333 4444" class="form-control">
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="form-group">
+                                <label class="form-label">Expiry Date</label>
+                                <input type="text" placeholder="MM/YY" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">CVV / CVC</label>
+                                <input type="password" placeholder="***" class="form-control" maxlength="3">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- UPI Payment Form -->
+                    <div id="form-upi" style="display: none; flex-direction: column; align-items: center; gap: 16px; text-align: center; padding: 10px 0;">
+                        <span style="font-size: 2.5rem; animation: pulse 2s infinite;">📲</span>
+                        <h4 style="font-family: var(--font-body); font-weight: 600; color: var(--primary-dark);">Scan & Pay with UPI</h4>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; max-width: 320px;">We will display a secure dynamic payment QR code or prompt your UPI apps upon placing the order.</p>
+                        <input type="text" placeholder="Enter your UPI ID (e.g. user@okhdfcbank)" class="form-control" style="max-width: 300px; text-align: center;">
+                    </div>
+                    
+                    <!-- COD Payment Message -->
+                    <div id="form-cod" style="display: none; flex-direction: column; align-items: center; gap: 16px; text-align: center; padding: 20px 0;">
+                        <span style="font-size: 2.5rem;">🚚</span>
+                        <h4 style="font-family: var(--font-body); font-weight: 600; color: var(--primary-dark);">Cash / Card on Delivery</h4>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; max-width: 350px;">Complete your purchase and pay at the time of delivery using cash, card, or domestic wallets directly to the logistics partner.</p>
+                    </div>
+
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="padding: 14px 30px; align-self: flex-start;">
+                    Place Secure Order &rarr;
+                </button>
+            </form>
+        </div>
+        
+        <!-- Summary Sidebar (Right Column) -->
+        <div class="glass-card" style="padding: 30px;">
+            <h3 style="font-size: 1.3rem; font-family: var(--font-heading); color: var(--primary-dark); margin-bottom: 20px; border-bottom: 1px solid rgba(81, 60, 151, 0.08); padding-bottom: 10px;">Cart Summary</h3>
+            
+            <div style="display: flex; flex-direction: column; gap: 14px; font-size: 0.95rem;">
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--text-muted);">Subtotal</span>
+                    <span style="font-weight: 600;">₹ {{ total }}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--text-muted);">Fragile Delivery</span>
+                    <span style="color: #2e7d32; font-weight: 600;">FREE</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--text-muted);">Premium Wrap</span>
+                    <span style="color: #2e7d32; font-weight: 600;">FREE</span>
+                </div>
+                <hr style="border: none; border-top: 1px solid rgba(81, 60, 151, 0.08); margin: 10px 0;">
+                <div style="display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: 700; color: var(--primary-dark);">
+                    <span>Total Amount</span>
+                    <span>₹ {{ total }}</span>
+                </div>
+            </div>
+            
+            <div style="margin-top: 30px; display: flex; flex-direction: column; gap: 12px; font-size: 0.8rem; color: var(--text-light); text-align: center;">
+                <div>🛡 256-bit AES Encryption Verified</div>
+                <div>⭐ 100% Satisfaction Guarantee</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.08); }
+        100% { transform: scale(1); }
+    }
+</style>
+
+<script>
+    function switchTab(mode) {
+        // Form views
+        const fCard = document.getElementById('form-card');
+        const fUpi = document.getElementById('form-upi');
+        const fCod = document.getElementById('form-cod');
+        
+        // Tab wrappers
+        const tCard = document.getElementById('tab-card');
+        const tUpi = document.getElementById('tab-upi');
+        const tCod = document.getElementById('tab-cod');
+        
+        // Reset
+        fCard.style.display = 'none';
+        fUpi.style.display = 'none';
+        fCod.style.display = 'none';
+        tCard.style.borderColor = 'rgba(81, 60, 151, 0.15)';
+        tCard.style.background = 'white';
+        tUpi.style.borderColor = 'rgba(81, 60, 151, 0.15)';
+        tUpi.style.background = 'white';
+        tCod.style.borderColor = 'rgba(81, 60, 151, 0.15)';
+        tCod.style.background = 'white';
+        
+        if (mode === 'card') {
+            fCard.style.display = 'flex';
+            tCard.style.borderColor = 'var(--primary)';
+            tCard.style.background = 'rgba(81, 60, 151, 0.02)';
+        } else if (mode === 'upi') {
+            fUpi.style.display = 'flex';
+            tUpi.style.borderColor = 'var(--primary)';
+            tUpi.style.background = 'rgba(81, 60, 151, 0.02)';
+        } else if (mode === 'cod') {
+            fCod.style.display = 'flex';
+            tCod.style.borderColor = 'var(--primary)';
+            tCod.style.background = 'rgba(81, 60, 151, 0.02)';
+        }
+    }
+    
+    // Initialize active tab styling
+    document.addEventListener('DOMContentLoaded', () => {
+        switchTab('card');
+    });
+</script>
+{% endblock %}

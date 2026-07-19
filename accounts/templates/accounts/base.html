@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}{% block auth_title %}Auth{% endblock %} | Parama's ARTISTRY{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper" style="max-width: 520px; margin: 60px auto; padding: 0 20px;">
+    <div class="glass-card">
+        {% block auth_content %}{% endblock %}
+    </div>
+</div>
+{% endblock %}

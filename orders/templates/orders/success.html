@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Order Confirmed | Parama's ARTISTRY Premium{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 800px; margin: 50px auto; padding: 0 5%; min-height: 70vh;">
+    
+    <!-- Progress Indicator -->
+    <div class="progress-steps" style="max-width: 600px; margin-bottom: 60px;">
+        <div class="step-item completed">
+            <div class="step-circle">✓</div>
+            <span class="step-label">Cart</span>
+        </div>
+        <div class="step-item completed">
+            <div class="step-circle">✓</div>
+            <span class="step-label">Address</span>
+        </div>
+        <div class="step-item completed">
+            <div class="step-circle">✓</div>
+            <span class="step-label">Payment</span>
+        </div>
+        <div class="step-item active">
+            <div class="step-circle">✓</div>
+            <span class="step-label">Receipt</span>
+        </div>
+    </div>
+
+    <!-- Success Content -->
+    <div class="glass-card" style="text-align: center; padding: 60px 40px; box-shadow: var(--shadow-lg);">
+        <div class="success-checkmark">✓</div>
+        
+        <h1 style="font-family: var(--font-heading); font-size: 2.2rem; color: var(--primary-dark); margin-bottom: 12px;">Order Confirmed</h1>
+        <p style="color: var(--text-muted); font-size: 1rem; max-width: 500px; margin: 0 auto 30px;">Thank you for shopping at Parama's ARTISTRY! Your luxury items are being packed in our signature velvet wrapping and will be shipped shortly.</p>
+        
+        <!-- Order Receipt card -->
+        <div style="background: rgba(81, 60, 151, 0.02); border: 1.5px solid rgba(81, 60, 151, 0.08); border-radius: var(--border-radius-md); max-width: 500px; margin: 0 auto 40px; padding: 24px; text-align: left;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid rgba(81, 60, 151, 0.06); padding-bottom: 10px; font-size: 0.95rem;">
+                <span style="color: var(--text-muted); font-weight: 500;">Order ID</span>
+                <strong style="color: var(--primary-dark);">#{{ order.id|default:"10024" }}</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid rgba(81, 60, 151, 0.06); padding-bottom: 10px; font-size: 0.95rem;">
+                <span style="color: var(--text-muted); font-weight: 500;">Grand Total Paid</span>
+                <strong style="color: var(--primary);">₹ {{ order.total_price|default:"0.00" }}</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.95rem;">
+                <span style="color: var(--text-muted); font-weight: 500;">Estimated Delivery</span>
+                <strong style="color: var(--accent-dark);">{{ delivery_date }}</strong>
+            </div>
+        </div>
+        
+        <!-- Actions -->
+        <div style="display: flex; justify-content: center; gap: 16px;">
+            <a href="{% url 'my_orders' %}" class="btn btn-primary" style="padding: 14px 28px;">
+                📦 View My Orders
+            </a>
+            <a href="{% url 'home' %}" class="btn btn-outline" style="padding: 14px 28px;">
+                🛍 Continue Shopping
+            </a>
+        </div>
+    </div>
+    
+</div>
+{% endblock %}

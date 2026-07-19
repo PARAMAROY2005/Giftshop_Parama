@@ -1,0 +1,38 @@
+{% extends "accounts/base.html" %}
+
+{% block auth_title %}Register{% endblock %}
+
+{% block auth_content %}
+<h2 style="margin-bottom: 24px; text-align: center; color: var(--primary-dark);">Create Account</h2>
+<p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Join our premium luxury gift boutique</p>
+
+<form method="POST" style="display: flex; flex-direction: column; gap: 16px;">
+    {% csrf_token %}
+    
+    {% for field in form %}
+    <div class="form-group" style="margin-bottom: 12px;">
+        <label class="form-label" for="{{ field.id_for_label }}" style="display: block; font-weight: 500; margin-bottom: 6px; font-size: 0.9rem; color: var(--primary-dark);">
+            {{ field.label }}
+        </label>
+        {{ field }}
+        {% if field.help_text %}
+        <small style="color: var(--text-light); font-size: 0.75rem; display: block; margin-top: 4px;">{{ field.help_text|safe }}</small>
+        {% endif %}
+        {% if field.errors %}
+        <span style="color: #c62828; font-size: 0.8rem; display: block; margin-top: 4px;">{{ field.errors.as_text }}</span>
+        {% endif %}
+    </div>
+    {% endfor %}
+    
+    <button type="submit" class="btn btn-primary btn-full" style="margin-top: 10px; padding: 14px;">
+        Register Account
+    </button>
+</form>
+
+<p style="margin-top: 24px; text-align: center; font-size: 0.95rem; color: var(--text-muted);">
+    Already have an account?
+    <a href="{% url 'login' %}" style="color: var(--primary); font-weight: 600; text-decoration: underline;">
+        Login here
+    </a>
+</p>
+{% endblock %}

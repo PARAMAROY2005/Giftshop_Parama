@@ -1,0 +1,43 @@
+.success{
+
+width:600px;
+
+margin:70px auto;
+
+text-align:center;
+
+background:white;
+
+padding:40px;
+
+border-radius:12px;
+
+box-shadow:0 0 10px gray;
+
+}
+
+.tick{
+
+font-size:70px;
+
+color:green;
+
+}
+
+button{
+
+padding:15px 30px;
+
+background:green;
+
+color:white;
+
+border:none;
+
+border-radius:8px;
+
+font-size:18px;
+
+margin-top:20px;
+
+}

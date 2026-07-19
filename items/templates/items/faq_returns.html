@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}FAQs & Returns | PARAMA'S ARTISTRY Luxury Handcrafted Boutique{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 1100px; margin: 60px auto; padding: 0 5%; min-height: 70vh;">
+    
+    <div class="section-heading" style="text-align: center; margin-bottom: 50px;">
+        <p class="eyebrow">Customer Support & Assistance</p>
+        <h1 style="font-family: var(--font-heading); font-size: 2.8rem; color: var(--primary-dark); margin-top: 10px;">FAQs & Returns</h1>
+        <p style="color: var(--text-muted); font-size: 1rem; max-width: 600px; margin: 15px auto 0;">Find quick answers about customized orders, fragile delivery safety, and boutique return rules.</p>
+    </div>
+
+    <!-- FAQ & Returns Layout -->
+    <div class="faq-grid" style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 50px; align-items: start; margin-bottom: 80px;">
+        
+        <!-- Left: FAQs -->
+        <div>
+            <h2 style="font-family: var(--font-heading); color: var(--primary-dark); font-size: 1.8rem; margin-bottom: 25px;">Frequently Asked Questions</h2>
+            
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <!-- Q1 -->
+                <div class="glass-card" style="padding: 24px 30px; background: rgba(255, 255, 255, 0.95); border-radius: var(--border-radius-md); border: 1px solid var(--glass-border);">
+                    <h3 style="font-size: 1.05rem; font-family: var(--font-body); font-weight: 600; color: var(--primary-dark); margin-bottom: 10px;">✦ How long does it take to craft a customized gift?</h3>
+                    <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6;">
+                        Since every item is fully handmade, crafting timelines vary. Standard catalog products take 1-2 days, while highly custom items (like Explosion Boxes or Scrapbooks) require 3-4 days of meticulous design before shipment.
+                    </p>
+                </div>
+                
+                <!-- Q2 -->
+                <div class="glass-card" style="padding: 24px 30px; background: rgba(255, 255, 255, 0.95); border-radius: var(--border-radius-md); border: 1px solid var(--glass-border);">
+                    <h3 style="font-size: 1.05rem; font-family: var(--font-body); font-weight: 600; color: var(--primary-dark); margin-bottom: 10px;">✦ What are the photo size requirements for calendars and frames?</h3>
+                    <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6;">
+                        For the 12-Month Calendar and Polaroid Prints, high-resolution square (1:1) or portrait images are best. You can upload them during checkout, or reply to our confirmation email with your files.
+                    </p>
+                </div>
+
+                <!-- Q3 -->
+                <div class="glass-card" style="padding: 24px 30px; background: rgba(255, 255, 255, 0.95); border-radius: var(--border-radius-md); border: 1px solid var(--glass-border);">
+                    <h3 style="font-size: 1.05rem; font-family: var(--font-body); font-weight: 600; color: var(--primary-dark); margin-bottom: 10px;">✦ How do you ensure fragile gift boxes do not get damaged?</h3>
+                    <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6;">
+                        We ship all packages inside double-walled hardboard cartons surrounded by protective bubbles. Each order is labeled as highly fragile and shipped via specialized express air networks to avoid rough sorting hubs.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Returns Policy -->
+        <div class="glass-card" style="padding: 40px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); border-radius: var(--border-radius-lg); border: 1px solid var(--glass-border); box-shadow: var(--shadow-md);">
+            <h2 style="font-family: var(--font-heading); color: var(--primary-dark); font-size: 1.6rem; margin-bottom: 20px; border-bottom: 1.5px solid var(--accent); padding-bottom: 12px;">Return & Refund Policy</h2>
+            
+            <p style="color: var(--text-charcoal); font-size: 0.95rem; line-height: 1.7; margin-bottom: 18px;">
+                We take immense pride in our quality. However, because our products are tailored with personalized pictures, names, and custom elements, <strong>we cannot offer standard returns on fully customized items</strong> unless there is a clear physical defect or courier transit damage.
+            </p>
+
+            <h4 style="color: var(--primary); font-family: var(--font-heading); font-size: 1.1rem; margin-bottom: 10px; margin-top: 25px;">Returns Process (Defective Items)</h4>
+            <ul style="color: var(--text-muted); font-size: 0.9rem; padding-left: 20px; line-height: 1.8; margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px;">
+                <li>Report the damage via email within <strong>48 hours</strong> of delivery.</li>
+                <li>Provide snapshots showing the packaging box and the damaged contents.</li>
+                <li>Upon verification, we will craft and ship a brand new replacement, completely free of charge.</li>
+            </ul>
+
+            <div style="background: rgba(183, 110, 121, 0.04); border: 1px solid rgba(183, 110, 121, 0.15); border-radius: var(--border-radius-md); padding: 20px; margin-top: 30px;">
+                <h5 style="color: var(--primary-dark); font-weight: 600; margin-bottom: 8px; font-size: 0.92rem;">Need to file a return claim?</h5>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 12px; line-height: 1.5;">Contact our support team directly with your Order ID to initiate verification.</p>
+                <a href="{% url 'contact' %}" class="btn btn-secondary btn-small" style="display: inline-block;">Open Claims Ticket</a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+    @media (max-width: 991px) {
+        .faq-grid {
+            grid-template-columns: 1fr !important;
+            gap: 40px !important;
+        }
+    }
+</style>
+{% endblock %}

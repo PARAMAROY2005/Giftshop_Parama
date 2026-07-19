@@ -1,0 +1,200 @@
+/* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    min-height:100vh;
+}
+
+/* Navbar */
+
+nav{
+    background:#ffffff;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 60px;
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+nav .logo{
+    font-size:26px;
+    font-weight:700;
+    color:#6C63FF;
+}
+
+nav ul{
+    display:flex;
+    list-style:none;
+}
+
+nav ul li{
+    margin-left:25px;
+}
+
+nav ul li a{
+    text-decoration:none;
+    color:#333;
+    font-weight:500;
+    transition:.3s;
+}
+
+nav ul li a:hover{
+    color:#6C63FF;
+}
+
+/* Container */
+
+.container{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:85vh;
+}
+
+/* Card */
+
+.card{
+    width:420px;
+    background:#fff;
+    padding:40px;
+    border-radius:18px;
+    box-shadow:0 15px 40px rgba(0,0,0,.2);
+}
+
+/* Heading */
+
+.card h2{
+    text-align:center;
+    margin-bottom:25px;
+    color:#333;
+}
+
+/* Form */
+
+form p{
+    margin-bottom:18px;
+}
+
+label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:500;
+}
+
+input{
+    width:100%;
+    padding:12px 15px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    outline:none;
+    font-size:15px;
+    transition:.3s;
+}
+
+input:focus{
+    border-color:#6C63FF;
+    box-shadow:0 0 8px rgba(108,99,255,.3);
+}
+
+/* Button */
+
+button{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border:none;
+    border-radius:8px;
+    background:#6C63FF;
+    color:#fff;
+    font-size:16px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+button:hover{
+    background:#5145cd;
+}
+
+/* Links */
+
+.card p{
+    margin-top:20px;
+    text-align:center;
+}
+
+.card a{
+    color:#6C63FF;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.card a:hover{
+    text-decoration:underline;
+}
+
+/* Error Messages */
+
+.errorlist{
+    color:red;
+    list-style:none;
+    margin-bottom:10px;
+    font-size:14px;
+}
+
+/* Profile */
+
+.profile-box{
+    text-align:center;
+}
+
+.profile-box h2{
+    margin-bottom:20px;
+}
+
+.profile-box p{
+    margin:12px 0;
+    font-size:18px;
+}
+
+.logout-btn{
+    display:inline-block;
+    margin-top:20px;
+    padding:12px 25px;
+    background:#ff4d4d;
+    color:white;
+    border-radius:8px;
+    text-decoration:none;
+    transition:.3s;
+}
+
+.logout-btn:hover{
+    background:#d93636;
+}
+
+/* Responsive */
+
+@media(max-width:600px){
+
+    nav{
+        padding:15px 20px;
+        flex-direction:column;
+    }
+
+    nav ul{
+        margin-top:15px;
+    }
+
+    .card{
+        width:90%;
+        padding:30px;
+    }
+
+}

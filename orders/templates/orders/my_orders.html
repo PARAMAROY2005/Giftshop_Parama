@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Orders | Parama's ARTISTRY Premium{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 900px; margin: 50px auto; padding: 0 5%; min-height: 70vh;">
+    
+    <div class="section-heading" style="text-align: left; margin-bottom: 40px;">
+        <p class="eyebrow">Purchase History</p>
+        <h1 style="font-size: 2.5rem; color: var(--primary-dark); font-family: var(--font-heading);">My Orders</h1>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 6px;">Track your gifts and delivery updates in one elegant dashboard.</p>
+    </div>
+
+    {% if orders %}
+        <div style="display: flex; flex-direction: column; gap: 30px;">
+            {% for order in orders %}
+            <div class="glass-card" style="padding: 30px; display: flex; flex-direction: column; gap: 20px;">
+                
+                <!-- Order Header -->
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(81, 60, 151, 0.08); padding-bottom: 16px;">
+                    <div>
+                        <h3 style="font-size: 1.25rem; font-family: var(--font-body); font-weight: 600; color: var(--primary-dark);">Order #{{ order.id }}</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 4px;">Placed on {{ order.created_at|date:"d F Y, H:i" }}</p>
+                    </div>
+                    
+                    <!-- Status Badge -->
+                    <span style="padding: 6px 14px; border-radius: 30px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+                        {% if order.status == 'Placed' %}
+                            background: rgba(81, 60, 151, 0.1); color: var(--primary);
+                        {% elif order.status == 'Delivered' %}
+                            background: rgba(46, 125, 50, 0.1); color: #2e7d32;
+                        {% else %}
+                            background: rgba(212, 175, 55, 0.15); color: var(--accent-dark);
+                        {% endif %}">
+                        {{ order.status }}
+                    </span>
+                </div>
+                
+                <!-- Order Items list -->
+                <div style="padding: 16px; background: rgba(81, 60, 151, 0.02); border: 1.5px solid rgba(81, 60, 151, 0.06); border-radius: var(--border-radius-md);">
+                    <p style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-light); letter-spacing: 1px; font-weight: 600; margin-bottom: 12px;">Gifts List</p>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        {% for item in order.orderitem_set.all %}
+                        <div style="display: flex; justify-content: space-between; font-size: 0.95rem;">
+                            <span style="color: var(--text-charcoal); font-weight: 500;">✦ {{ item.gift.name }}</span>
+                            <span style="color: var(--text-muted);">Qty: {{ item.quantity }} &nbsp;|&nbsp; Price: ₹ {{ item.price }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <!-- Delivery Details & Tracker -->
+                <div>
+                    <p style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-light); letter-spacing: 1px; font-weight: 600; margin-bottom: 16px;">Delivery Progress</p>
+                    
+                    <!-- Progress Bar (Visual representation of status) -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; position: relative; margin: 0 10px 10px;">
+                        <!-- Progress Line -->
+                        <div style="position: absolute; top: 50%; left: 0; transform: translateY(-50%); width: 100%; height: 3px; background: rgba(81, 60, 151, 0.08); z-index: 1;"></div>
+                        <div style="position: absolute; top: 50%; left: 0; transform: translateY(-50%); height: 3px; background: var(--accent); z-index: 2;
+                            {% if order.status == 'Placed' %} width: 25%;
+                            {% elif order.status == 'Processing' %} width: 50%;
+                            {% elif order.status == 'Shipped' %} width: 75%;
+                            {% else %} width: 100%; {% endif %}">
+                        </div>
+                        
+                        <!-- Step Items -->
+                        <div style="z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                            <div style="width: 14px; height: 14px; border-radius: 50%; background: var(--accent); border: 2px solid white; box-shadow: var(--shadow-sm);"></div>
+                            <span style="font-size: 0.75rem; font-weight: 600; color: var(--accent-dark);">Placed</span>
+                        </div>
+                        <div style="z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                            <div style="width: 14px; height: 14px; border-radius: 50%; 
+                                {% if order.status != 'Placed' %} background: var(--accent); {% else %} background: #dcd9e8; {% endif %} border: 2px solid white; box-shadow: var(--shadow-sm);"></div>
+                            <span style="font-size: 0.75rem; font-weight: 600; 
+                                {% if order.status != 'Placed' %} color: var(--accent-dark); {% else %} color: var(--text-light); {% endif %}">Packed</span>
+                        </div>
+                        <div style="z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                            <div style="width: 14px; height: 14px; border-radius: 50%; 
+                                {% if order.status != 'Placed' and order.status != 'Processing' %} background: var(--accent); {% else %} background: #dcd9e8; {% endif %} border: 2px solid white; box-shadow: var(--shadow-sm);"></div>
+                            <span style="font-size: 0.75rem; font-weight: 600; 
+                                {% if order.status != 'Placed' and order.status != 'Processing' %} color: var(--accent-dark); {% else %} color: var(--text-light); {% endif %}">Shipped</span>
+                        </div>
+                        <div style="z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                            <div style="width: 14px; height: 14px; border-radius: 50%; 
+                                {% if order.status == 'Delivered' %} background: var(--accent); {% else %} background: #dcd9e8; {% endif %} border: 2px solid white; box-shadow: var(--shadow-sm);"></div>
+                            <span style="font-size: 0.75rem; font-weight: 600; 
+                                {% if order.status == 'Delivered' %} color: var(--accent-dark); {% else %} color: var(--text-light); {% endif %}">Delivered</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Order Footer Row -->
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(81, 60, 151, 0.08); padding-top: 16px; margin-top: 10px;">
+                    <div>
+                        <span style="color: var(--text-muted); font-size: 0.9rem;">Total Paid: </span>
+                        <strong style="font-size: 1.15rem; color: var(--primary-dark);">₹ {{ order.total_price }}</strong>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <a href="{% url 'home' %}#shop" class="btn btn-outline btn-small">Reorder Items</a>
+                    </div>
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <!-- Empty State -->
+        <div class="glass-card" style="text-align: center; padding: 80px 40px; box-shadow: var(--shadow-sm); border: 1px solid rgba(81, 60, 151, 0.04);">
+            <div style="font-size: 4rem; color: rgba(81, 60, 151, 0.1); margin-bottom: 20px;">📦</div>
+            <h2 style="font-family: var(--font-heading); margin-bottom: 12px; color: var(--primary-dark);">No Orders Found</h2>
+            <p style="color: var(--text-muted); max-width: 450px; margin: 0 auto 30px;">Your purchase history will appear here once you buy an exquisite present!</p>
+            <a href="{% url 'home' %}#shop" class="btn btn-primary">
+                Shop Our Collection
+            </a>
+        </div>
+    {% endif %}
+    
+</div>
+{% endblock %}

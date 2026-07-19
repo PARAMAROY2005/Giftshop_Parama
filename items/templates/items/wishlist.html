@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Wishlist | Parama's ARTISTRY Premium{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 1200px; margin: 50px auto; padding: 0 5%; min-height: 70vh;">
+    
+    <div class="section-heading" style="text-align: left; margin-bottom: 40px; display: flex; justify-content: space-between; align-items: flex-end;">
+        <div>
+            <p class="eyebrow">Your Favorites</p>
+            <h1 style="font-size: 2.5rem; color: var(--primary-dark); font-family: var(--font-heading);">My Wishlist</h1>
+        </div>
+        <a href="{% url 'home' %}#shop" class="btn btn-outline btn-small">
+            🛍 Continue Shopping
+        </a>
+    </div>
+
+    <div class="products-grid">
+        {% for item in gifts %}
+        <article class="product-card">
+            <div class="card-img-container">
+                <img src="{% static item.gift.image %}" alt="{{ item.gift.name }}">
+                <span class="card-badge">{{ item.gift.category }}</span>
+            </div>
+            
+            <div class="card-info">
+                <span class="card-category">{{ item.gift.category }}</span>
+                <h3>{{ item.gift.name }}</h3>
+                
+                <div class="rating-container">
+                    <div class="rating-stars">
+                        {% for i in item.gift.rating_stars %}★{% endfor %}
+                    </div>
+                    <span class="rating-value">{{ item.gift.rating }}</span>
+                </div>
+                
+                <div class="card-price-row" style="margin-bottom: 20px;">
+                    <span class="card-price">₹ {{ item.gift.price }}</span>
+                </div>
+                
+                <div style="display: flex; flex-direction: column; gap: 8px; margin-top: auto;">
+                    <a href="{% url 'move_to_cart' item.id %}" class="btn btn-primary btn-small btn-full">
+                        🛒 Move to Cart
+                    </a>
+                    <div style="display: flex; gap: 8px;">
+                        <a href="{% url 'gift_detail' item.gift.id %}" class="btn btn-outline btn-small" style="flex-grow: 1; text-align: center;">
+                            👁 View Details
+                        </a>
+                        <a href="{% url 'delete_wishlist' item.id %}" class="btn btn-secondary btn-small" style="color: #c62828; border-color: rgba(198, 40, 40, 0.2); padding: 8px 12px;" title="Remove Item">
+                            🗑 Remove
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </article>
+        {% empty %}
+        <!-- Empty State -->
+        <div style="grid-column: 1/-1; text-align: center; padding: 80px 40px; background: white; border-radius: var(--border-radius-lg); box-shadow: var(--shadow-sm); border: 1px solid rgba(81, 60, 151, 0.04);">
+            <div style="font-size: 4rem; color: rgba(81, 60, 151, 0.1); margin-bottom: 20px; animation: heartbeat 2s infinite ease-in-out;">❤</div>
+            <h2 style="font-family: var(--font-heading); margin-bottom: 12px; color: var(--primary-dark);">Your Wishlist is Empty</h2>
+            <p style="color: var(--text-muted); max-width: 450px; margin: 0 auto 30px;">Add some beautiful keepsakes and elegant bouquets to your favorites list while you shop!</p>
+            <a href="{% url 'home' %}#shop" class="btn btn-primary">
+                Explore Parama's ARTISTRY Catalog
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    @keyframes heartbeat {
+        0% { transform: scale(1); }
+        30% { transform: scale(1.15); }
+        60% { transform: scale(1); }
+        100% { transform: scale(1); }
+    }
+</style>
+{% endblock %}

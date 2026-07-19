@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Shopping Cart | Parama's ARTISTRY Premium{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 1200px; margin: 50px auto; padding: 0 5%; min-height: 70vh;">
+    
+    <div class="section-heading" style="text-align: left; margin-bottom: 40px;">
+        <p class="eyebrow">Checkout Items</p>
+        <h1 style="font-size: 2.5rem; color: var(--primary-dark); font-family: var(--font-heading);">Shopping Cart</h1>
+    </div>
+
+    {% if cart_items %}
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 40px; align-items: start;">
+        
+        <!-- Cart Items List (Left Column) -->
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+            {% for item in cart_items %}
+            <div class="glass-card" style="padding: 20px; display: flex; gap: 24px; align-items: center; border-radius: var(--border-radius-md);">
+                <!-- Product Thumb -->
+                <div style="width: 100px; height: 100px; border-radius: var(--border-radius-sm); overflow: hidden; border: 1px solid rgba(81, 60, 151, 0.08); flex-shrink: 0;">
+                    <img src="{% static item.gift.image %}" alt="{{ item.gift.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                
+                <!-- Product Info -->
+                <div style="flex-grow: 1;">
+                    <span class="card-category" style="font-size: 0.75rem; margin-bottom: 4px; display: block;">✦ {{ item.gift.category }}</span>
+                    <h3 style="font-size: 1.15rem; font-family: var(--font-body); font-weight: 600; color: var(--text-charcoal); margin-bottom: 6px;">{{ item.gift.name }}</h3>
+                    <p style="font-size: 0.9rem; color: var(--primary-dark); font-weight: 600;">₹ {{ item.gift.price }}</p>
+                </div>
+                
+                <!-- Quantity controls -->
+                <div style="display: flex; align-items: center; gap: 12px; border: 1.5px solid rgba(81, 60, 151, 0.1); border-radius: 30px; padding: 4px 12px; background: rgba(250, 249, 246, 0.5);">
+                    <a href="{% url 'decrease_quantity' item.id %}" style="font-weight: 700; color: var(--primary); font-size: 1.1rem; width: 24px; text-align: center;">&minus;</a>
+                    <span style="font-weight: 600; font-size: 1rem; min-width: 20px; text-align: center;">{{ item.quantity }}</span>
+                    <a href="{% url 'increase_quantity' item.id %}" style="font-weight: 700; color: var(--primary); font-size: 1.1rem; width: 24px; text-align: center;">&plus;</a>
+                </div>
+                
+                <!-- Subtotal and Remove -->
+                <div style="text-align: right; min-width: 120px;">
+                    <p style="font-weight: 700; font-size: 1.1rem; color: var(--primary-dark); margin-bottom: 8px;">₹ {% widthratio item.gift.price 1 item.quantity %}</p>
+                    <a href="{% url 'delete_cart_item' item.id %}" style="color: #c62828; font-size: 0.85rem; font-weight: 500; text-decoration: underline;">
+                        Remove
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Summary Card (Right Column) -->
+        <div class="glass-card" style="padding: 30px; position: sticky; top: 100px;">
+            <h2 style="font-size: 1.4rem; margin-bottom: 24px; color: var(--primary-dark); font-family: var(--font-heading); border-bottom: 1px solid rgba(81, 60, 151, 0.08); padding-bottom: 12px;">Order Summary</h2>
+            
+            <div style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px; font-size: 0.95rem; color: var(--text-charcoal);">
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Subtotal</span>
+                    <span style="font-weight: 600;">₹ {{ total }}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Premium Wrapping</span>
+                    <span style="color: #2e7d32; font-weight: 600;">FREE</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Fragile Delivery</span>
+                    <span style="color: #2e7d32; font-weight: 600;">FREE</span>
+                </div>
+                
+                <hr style="border: none; border-top: 1px solid rgba(81, 60, 151, 0.08); margin: 10px 0;">
+                
+                <div style="display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: 700; color: var(--primary-dark);">
+                    <span>Grand Total</span>
+                    <span>₹ {{ total }}</span>
+                </div>
+            </div>
+            
+            <a href="{% url 'checkout' %}" class="btn btn-primary btn-full" style="padding: 14px;">
+                Proceed to Checkout
+            </a>
+            
+            <p style="text-align: center; color: var(--text-light); font-size: 0.8rem; margin-top: 16px;">
+                🔒 Secure SSL Checkout & Payment Guarantee
+            </p>
+        </div>
+        
+    </div>
+    {% else %}
+    <!-- Empty State -->
+    <div class="glass-card" style="text-align: center; padding: 80px 40px; box-shadow: var(--shadow-sm); border: 1px solid rgba(81, 60, 151, 0.04);">
+        <div style="font-size: 4rem; color: rgba(81, 60, 151, 0.1); margin-bottom: 20px;">🛒</div>
+        <h2 style="font-family: var(--font-heading); margin-bottom: 12px; color: var(--primary-dark);">Your Cart is Empty</h2>
+        <p style="color: var(--text-muted); max-width: 450px; margin: 0 auto 30px;">Add some exquisite items to your shopping cart to celebrate your special moments!</p>
+        <a href="{% url 'home' %}#shop" class="btn btn-primary">
+            Explore Parama's ARTISTRY
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

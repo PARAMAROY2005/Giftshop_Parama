@@ -1,0 +1,78 @@
+:root {
+    --primary: #6c63ff;
+    --secondary: #ff7cb2;
+    --text: #2f214d;
+    --muted: #6a6281;
+    --white: #ffffff;
+}
+
+.orders-page {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 24px;
+}
+
+.page-header {
+    margin-bottom: 24px;
+}
+
+.page-header h1 {
+    font-size: 2rem;
+    color: var(--text);
+    margin-bottom: 8px;
+}
+
+.page-header p {
+    color: var(--muted);
+}
+
+.order-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 14px 32px rgba(76, 47, 130, 0.12);
+    margin-bottom: 18px;
+}
+
+.order-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.order-top h3 {
+    color: var(--text);
+    margin-bottom: 4px;
+}
+
+.status {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+}
+
+.order-body {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    padding: 16px 0;
+    border-top: 1px solid #efe7ff;
+    border-bottom: 1px solid #efe7ff;
+}
+
+.label { color: var(--muted); font-size: 0.9rem; margin-bottom: 4px; }
+.value { color: var(--text); font-weight: 600; }
+.order-actions { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+.btn { display: inline-flex; align-items: center; justify-content: center; padding: 10px 16px; border-radius: 999px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; text-decoration: none; }
+.btn-outline { background: white; color: var(--primary); border: 1px solid #e8dbff; }
+.empty-state { background: white; padding: 28px; border-radius: 20px; text-align: center; box-shadow: 0 14px 32px rgba(76,47,130,0.12); }
+.empty-state h2 { color: var(--text); margin-bottom: 8px; }
+.empty-state p { color: var(--muted); margin-bottom: 16px; }
+
+@media (max-width: 760px) {
+    .order-body { grid-template-columns: 1fr; }
+    .order-top { flex-direction: column; align-items: flex-start; gap: 8px; }
+}

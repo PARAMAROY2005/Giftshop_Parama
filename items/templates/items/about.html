@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us | PARAMA'S ARTISTRY Premium Handcrafted Boutique{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 1100px; margin: 60px auto; padding: 0 5%; min-height: 70vh;">
+    
+    <div class="section-heading" style="text-align: center; margin-bottom: 50px;">
+        <p class="eyebrow">The Artisan Philosophy</p>
+        <h1 style="font-family: var(--font-heading); font-size: 2.8rem; color: var(--primary-dark); margin-top: 10px;">Our Story</h1>
+        <p style="color: var(--text-muted); font-size: 1rem; max-width: 600px; margin: 15px auto 0;">Crafting memories into tangible, luxurious treasures that last a lifetime.</p>
+    </div>
+
+    <!-- About Content Layout -->
+    <div class="about-grid" style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 60px; align-items: center; margin-bottom: 80px;">
+        <div>
+            <h2 style="font-family: var(--font-heading); color: var(--primary-dark); font-size: 2rem; margin-bottom: 20px;">PARAMA'S ARTISTRY</h2>
+            <p style="color: var(--text-charcoal); font-size: 1.05rem; line-height: 1.8; margin-bottom: 20px;">
+                Founded with a deep passion for fine craftsmanship, <strong>PARAMA'S ARTISTRY</strong> is an elite boutique specializing in premium, custom, and handmade gifts. We believe that a true gift is more than an object—it is an emotional connection, a carefully composed message, and a memory captured in form.
+            </p>
+            <p style="color: var(--text-muted); font-size: 0.98rem; line-height: 1.7; margin-bottom: 25px;">
+                Every creation that leaves our studio is meticulously designed, printed, assembled, and decorated by hand. From our signature 3D explosion boxes to our everlasting ribbon flower bouquets and tailored polaroid albums, we employ premium archival papers, fine silks, and detailed vintage elements to guarantee a grand presentation.
+            </p>
+            
+            <div style="display: flex; gap: 30px; margin-top: 30px;">
+                <div>
+                    <h3 style="color: var(--primary); font-size: 2rem; font-family: var(--font-heading); margin-bottom: 4px;">100%</h3>
+                    <span style="font-size: 0.85rem; text-transform: uppercase; color: var(--text-light); font-weight: 600; letter-spacing: 1px;">Handcrafted Design</span>
+                </div>
+                <div>
+                    <h3 style="color: var(--primary); font-size: 2rem; font-family: var(--font-heading); margin-bottom: 4px;">5000+</h3>
+                    <span style="font-size: 0.85rem; text-transform: uppercase; color: var(--text-light); font-weight: 600; letter-spacing: 1px;">Happy Milestones</span>
+                </div>
+                <div>
+                    <h3 style="color: var(--primary); font-size: 2rem; font-family: var(--font-heading); margin-bottom: 4px;">Insured</h3>
+                    <span style="font-size: 0.85rem; text-transform: uppercase; color: var(--text-light); font-weight: 600; letter-spacing: 1px;">Air Logistics</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Image display with soft frame -->
+        <div style="position: relative;">
+            <div style="border-radius: var(--border-radius-lg); overflow: hidden; box-shadow: var(--shadow-lg); border: 2px solid var(--accent); background: white; padding: 12px;">
+                <img src="{% static 'images/giftbox.jpg' %}" alt="Our Crafting Process" style="width: 100%; height: 400px; object-fit: cover; border-radius: var(--border-radius-md);">
+            </div>
+            <!-- Decorative outline -->
+            <div style="position: absolute; top: -15px; left: -15px; right: 15px; bottom: 15px; border: 1.5px dashed var(--primary); border-radius: var(--border-radius-lg); z-index: -1;"></div>
+        </div>
+    </div>
+
+    <!-- Core Values Section -->
+    <section class="glass-card" style="padding: 50px; text-align: center; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: var(--border-radius-lg); margin-top: 50px;">
+        <h3 style="font-family: var(--font-heading); color: var(--primary-dark); font-size: 1.8rem; margin-bottom: 40px;">Our Elite Standards</h3>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 35px;">
+            <div>
+                <div style="font-size: 2.5rem; margin-bottom: 15px;">✒️</div>
+                <h4 style="font-family: var(--font-heading); color: var(--primary); font-size: 1.25rem; margin-bottom: 10px;">Bespoke Personalization</h4>
+                <p style="color: var(--text-muted); font-size: 0.92rem;">We personalize calendars, frames, and polaroids to tell your custom stories beautifully.</p>
+            </div>
+            <div>
+                <div style="font-size: 2.5rem; margin-bottom: 15px;">🎀</div>
+                <h4 style="font-family: var(--font-heading); color: var(--primary); font-size: 1.25rem; margin-bottom: 10px;">Signature Packaging</h4>
+                <p style="color: var(--text-muted); font-size: 0.92rem;">Each keepsake is swaddled in premium velvet wrapping and secured with high-grade silk ribbon bows.</p>
+            </div>
+            <div>
+                <div style="font-size: 2.5rem; margin-bottom: 15px;">✈️</div>
+                <h4 style="font-family: var(--font-heading); color: var(--primary); font-size: 1.25rem; margin-bottom: 10px;">Careful Air Shipping</h4>
+                <p style="color: var(--text-muted); font-size: 0.92rem;">All orders are dispatched via top-tier courier networks with comprehensive fragility insurance.</p>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<style>
+    @media (max-width: 991px) {
+        .about-grid {
+            grid-template-columns: 1fr !important;
+            gap: 40px !important;
+        }
+    }
+</style>
+{% endblock %}

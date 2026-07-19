@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Us | PARAMA'S ARTISTRY Luxury Handcrafted Boutique{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 1100px; margin: 60px auto; padding: 0 5%; min-height: 70vh;">
+    
+    <div class="section-heading" style="text-align: center; margin-bottom: 50px;">
+        <p class="eyebrow">Connect with Our Studio</p>
+        <h1 style="font-family: var(--font-heading); font-size: 2.8rem; color: var(--primary-dark); margin-top: 10px;">Contact Us</h1>
+        <p style="color: var(--text-muted); font-size: 1rem; max-width: 600px; margin: 15px auto 0;">Have a customization query, bulk inquiry, or special event request? We are here to help.</p>
+    </div>
+
+    <!-- Contact Grid -->
+    <div class="contact-grid" style="display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 50px; align-items: start; margin-bottom: 80px;">
+        
+        <!-- Left: Contact info -->
+        <div class="glass-card" style="padding: 40px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); border-radius: var(--border-radius-lg); border: 1px solid var(--glass-border); box-shadow: var(--shadow-md);">
+            <h3 style="font-family: var(--font-heading); color: var(--primary-dark); font-size: 1.5rem; margin-bottom: 30px; border-bottom: 1.5px solid var(--accent); padding-bottom: 12px;">Boutique Details</h3>
+            
+            <div style="display: flex; flex-direction: column; gap: 24px;">
+                <div style="display: flex; align-items: flex-start; gap: 16px;">
+                    <div style="font-size: 1.4rem; color: var(--primary);">📍</div>
+                    <div>
+                        <strong style="display: block; color: var(--primary-dark); font-size: 0.95rem; margin-bottom: 4px;">Studio Headquarters</strong>
+                        <span style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">Agarpara,TP Road<br>Kolkata, West Bengal - 700109</span>
+                    </div>
+                </div>
+                
+                <div style="display: flex; align-items: flex-start; gap: 16px;">
+                    <div style="font-size: 1.4rem; color: var(--primary);">📞</div>
+                    <div>
+                        <strong style="display: block; color: var(--primary-dark); font-size: 0.95rem; margin-bottom: 4px;">Phone & Call Support</strong>
+                        <span style="color: var(--text-muted); font-size: 0.9rem;">+91 8902216714</span>
+                    </div>
+                </div>
+
+                <div style="display: flex; align-items: flex-start; gap: 16px;">
+                    <div style="font-size: 1.4rem; color: var(--primary);">💬</div>
+                    <div>
+                        <strong style="display: block; color: var(--primary-dark); font-size: 0.95rem; margin-bottom: 4px;">WhatsApp Helpdesk</strong>
+                        <a href="https://wa.me/918902216714" target="_blank" style="color: var(--primary); font-weight: 500; font-size: 0.9rem; text-decoration: underline;">Chat on WhatsApp</a>
+                    </div>
+                </div>
+                
+                <div style="display: flex; align-items: flex-start; gap: 16px;">
+                    <div style="font-size: 1.4rem; color: var(--primary);">✉️</div>
+                    <div>
+                        <strong style="display: block; color: var(--primary-dark); font-size: 0.95rem; margin-bottom: 4px;">Email Support</strong>
+                        <span style="color: var(--text-muted); font-size: 0.9rem;">paramasartistry2025@gmail.com</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Links -->
+            <div style="margin-top: 40px; padding-top: 25px; border-top: 1px solid rgba(81,60,151,0.06);">
+                <h4 style="font-family: var(--font-heading); color: var(--primary-dark); font-size: 1.1rem; margin-bottom: 16px;">Follow Our Studio</h4>
+                <div style="display: flex; gap: 12px;">
+                    <a href="https://www.facebook.com/share/1DGvgvZT5b/" target="_blank" rel="noopener noreferrer" style="padding: 10px 16px; background: rgba(183, 110, 121, 0.06); border: 1px solid rgba(183, 110, 121, 0.15); border-radius: 30px; font-size: 0.85rem; font-weight: 500; color: var(--primary);">Facebook</a>
+                    <a href="https://www.instagram.com/paramasartistry?igsh=ZzFmOWp0dHhudmk2" target="_blank" rel="noopener noreferrer" style="padding: 10px 16px; background: rgba(183, 110, 121, 0.06); border: 1px solid rgba(183, 110, 121, 0.15); border-radius: 30px; font-size: 0.85rem; font-weight: 500; color: var(--primary);">Instagram</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Contact Form -->
+        <div class="glass-card" style="padding: 40px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); border-radius: var(--border-radius-lg); border: 1px solid var(--glass-border); box-shadow: var(--shadow-md);">
+            <h3 style="font-family: var(--font-heading); color: var(--primary-dark); font-size: 1.5rem; margin-bottom: 30px; border-bottom: 1.5px solid var(--accent); padding-bottom: 12px;">Send an Inquiry</h3>
+            
+            <form method="POST" action="{% url 'contact' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="form-label" for="contact-name">Full Name</label>
+                    <input type="text" id="contact-name" name="name" class="form-control" placeholder="Your name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="contact-email">Email Address</label>
+                    <input type="email" id="contact-email" name="email" class="form-control" placeholder="Your email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="contact-interest">Interest / Occasion</label>
+                    <select id="contact-interest" name="interest" class="form-control" style="appearance: none; background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3D%22www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23B76E79%22%20stroke-width%3D%222%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 16px center; background-size: 16px;">
+                        <option value="general">General Query</option>
+                        <option value="customization">Personalized Gift Customization</option>
+                        <option value="wedding">Wedding Orders</option>
+                        <option value="bulk">Bulk / Corporate Gifts</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="contact-msg">Message</label>
+                    <textarea id="contact-msg" name="message" class="form-control" rows="4" placeholder="Detail your custom requests, dates, and ideas..." required style="resize: none;"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 14px 20px; font-weight: 600; margin-top: 15px;">Send Message</button>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+    @media (max-width: 991px) {
+        .contact-grid {
+            grid-template-columns: 1fr !important;
+            gap: 40px !important;
+        }
+    }
+</style>
+{% endblock %}

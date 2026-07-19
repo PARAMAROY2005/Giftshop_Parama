@@ -1,0 +1,321 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}PARAMA'S ARTISTRY | Premium Rose Gold Luxury Boutique{% endblock %}</title>
+    
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+    <!-- Flash Messages / Toasts -->
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert {% if message.tags %}{{ message.tags }}{% endif %}">
+            <span>{{ message }}</span>
+            <button onclick="this.parentElement.remove()" style="background:none; border:none; color:inherit; font-size:1.1rem; font-weight:bold; cursor:pointer;">&times;</button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Glass Sticky Navbar -->
+    <nav class="navbar">
+        <a href="{% url 'home' %}" class="logo">
+            <img src="{% static 'images/logo.jpg' %}?v=2" alt="Logo" style="height: 38px; width: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--accent); margin-right: 4px;">
+            <span class="logo-text">PARAMA'S <span>ARTISTRY</span></span>
+        </a>
+        
+        <button class="menu-toggle" type="button" aria-label="Toggle navigation">☰</button>
+        
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'home' %}#shop">Shop</a>
+            <a href="{% url 'about' %}">About</a>
+            <a href="{% url 'contact' %}">Contact</a>
+            <a href="{% url 'faq_returns' %}">FAQs</a>
+            <a href="{% url 'wishlist' %}">Wishlist</a>
+            <a href="{% url 'cart' %}" style="position: relative;">
+                Cart
+                {% if cart_count is not None %}
+                <span class="badge">{{ cart_count }}</span>
+                {% elif request.user.is_authenticated %}
+                <span class="badge" id="cart-counter"></span>
+                {% endif %}
+            </a>
+            <a href="{% url 'my_orders' %}">My Orders</a>
+            
+            <button class="dark-mode-toggle" id="theme-switch" onclick="toggleDarkMode()" aria-label="Toggle Dark Mode" style="margin-left: 10px;">🌙</button>
+            
+            {% if request.user.is_authenticated %}
+            <div class="profile-menu">
+                <a href="{% url 'profile' %}" class="btn btn-secondary btn-small">✦ {{ request.user.username }}</a>
+                <div class="profile-dropdown">
+                    <a href="{% url 'profile' %}">My Account</a>
+                    <a href="{% url 'my_orders' %}">My Orders</a>
+                    <a href="{% url 'logout' %}">Logout</a>
+                </div>
+            </div>
+            {% else %}
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'signup' %}" class="btn btn-primary btn-small">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Premium Royal Footer -->
+    <footer class="footer" id="contact">
+        <div class="footer-grid">
+            <div class="footer-brand" style="display: flex; flex-direction: column; gap: 15px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <img src="{% static 'images/logo.jpg' %}?v=2" alt="Logo" style="height: 38px; width: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--accent);">
+                    <h3 style="margin: 0; font-size: 1.3rem; color: white;">PARAMA'S <span style="color: var(--accent);">ARTISTRY</span></h3>
+                </div>
+                <p>Curating extraordinary handcrafted memories for life's unforgettable milestones. Experience rose gold luxury packaging, detailed craftsmanship, and fast insured delivery.</p>
+                <div class="socials">
+                    <a href="https://www.facebook.com/share/1DGvgvZT5b/" aria-label="Facebook" target="_blank" rel="noopener noreferrer">FB</a>
+                    <a href="https://www.instagram.com/paramasartistry?igsh=ZzFmOWp0dHhudmk2" aria-label="Instagram" target="_blank" rel="noopener noreferrer">IG</a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'about' %}">About Us</a></li>
+                    <li><a href="{% url 'contact' %}">Contact Us</a></li>
+                    <li><a href="{% url 'faq_returns' %}">FAQs & Returns</a></li>
+                    <li><a href="{% url 'wishlist' %}">My Wishlist</a></li>
+                    <li><a href="{% url 'cart' %}">Shopping Cart</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Gift Categories</h4>
+                <ul>
+                    <li><a href="{% url 'home' %}#shop">Explosion Boxes</a></li>
+                    <li><a href="{% url 'home' %}#shop">Memory Scrapbooks</a></li>
+                    <li><a href="{% url 'home' %}#shop">Ribbon Flowers</a></li>
+                    <li><a href="{% url 'home' %}#shop">Custom Photo Lamps</a></li>
+                    <li><a href="{% url 'home' %}#shop">Resin Keepsakes</a></li>
+                </ul>
+            </div>
+            <div class="footer-newsletter">
+                <h4>Newsletter</h4>
+                <p>Subscribe to receive news about new collections, seasonal sales, and custom packaging advice.</p>
+                <form action="#" onsubmit="event.preventDefault(); alert('Subscribed to newsletter successfully!');">
+                    <input type="email" placeholder="Enter your email" required>
+                    <button type="submit" class="btn btn-accent btn-small">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 PARAMA'S ARTISTRY Luxury Boutique. All Rights Reserved.</p>
+            <p>Designed for Ultimate Elegance & Prestige.</p>
+        </div>
+    </footer>
+
+    <!-- Gifting Concierge Chatbot -->
+    <div class="chatbot-toggle" id="chat-toggle" onclick="toggleChatWindow()">💬</div>
+    
+    <div class="chatbot-window" id="chat-window">
+        <div class="chatbot-header">
+            <div class="chatbot-header-info">
+                <span></span>
+                <h4>Gifting Concierge</h4>
+            </div>
+            <button onclick="toggleChatWindow()" style="background:none; border:none; color:white; font-size:1.4rem; cursor:pointer;">&times;</button>
+        </div>
+        
+        <div class="chatbot-body" id="chat-body">
+            <div class="chat-msg bot">
+                Hello! I am your <strong>PARAMA'S ARTISTRY</strong> gifting assistant. I can suggest the perfect gift for any occasion, and answer any queries regarding prices, quality, customization, wrapping, and delivery location. How can I help you today?
+            </div>
+        </div>
+        
+        <div class="chatbot-chips">
+            <div class="chatbot-chip" onclick="sendSuggested('Suggest Anniversary Gift')">Anniversary</div>
+            <div class="chatbot-chip" onclick="sendSuggested('Suggest Birthday Gift')">Birthday</div>
+            <div class="chatbot-chip" onclick="sendSuggested('Tell me about Delivery & Location')">Delivery</div>
+            <div class="chatbot-chip" onclick="sendSuggested('Tell me about Wrapping & Quality')">Quality</div>
+            <div class="chatbot-chip" onclick="sendSuggested('Price list of gifts')">Price Range</div>
+        </div>
+        
+        <form class="chatbot-input-area" id="chat-form" onsubmit="handleChatSubmit(event)">
+            <input type="text" id="chat-input" placeholder="Ask about gifts, prices, delivery..." required autocomplete="off">
+            <button type="submit">Send</button>
+        </form>
+    </div>
+
+    <!-- Floating WhatsApp Help Button -->
+    <a href="https://wa.me/918902216714?text=Hi!%20I%20want%20to%20know%20more%20about%20customized%20gifts%20from%20PARAMA'S%20ARTISTRY." class="whatsapp-btn" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+        <svg viewBox="0 0 24 24" fill="currentColor" style="width: 20px; height: 20px;">
+            <path d="M12.012 2C6.48 2 2 6.48 2 12.012c0 1.912.534 3.738 1.488 5.34L2 22l4.81-.1.144-.09A9.972 9.972 0 0012.012 22c5.532 0 10.01-4.48 10.01-10.012A10.01 10.01 0 0012.012 2zm5.522 13.99c-.21.58-.93 1.09-1.5 1.15-.49.05-1.12.26-3.23-.62-2.7-1.12-4.42-3.86-4.55-4.04-.13-.19-1.07-1.42-1.07-2.71 0-1.29.68-1.92.92-2.18.25-.25.54-.31.72-.31.18 0 .36 0 .52.01.17.01.4.01.62.53.22.54.77 1.88.84 2.02.07.15.12.32.02.5-.1.19-.15.3-.3.48-.15.18-.32.4-.45.54-.15.14-.3.29-.13.58.17.29.76 1.25 1.63 2.03.87.78 1.61 1.02 1.83 1.12.22.1.35.08.49-.07.13-.15.58-.68.74-.9.16-.23.32-.19.54-.11.23.08 1.48.7 1.73.83.25.12.42.18.48.29.07.11.07.63-.14 1.21z"/>
+        </svg>
+        <span>Chat with Us</span>
+    </a>
+
+    <!-- Scripts -->
+    <script>
+        // Init Theme
+        (function() {
+            const isDark = localStorage.getItem('dark-mode') === 'true';
+            if (isDark) {
+                document.body.classList.add('dark-mode');
+            }
+        })();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Theme button label update
+            const isDark = document.body.classList.contains('dark-mode');
+            const switchBtn = document.getElementById('theme-switch');
+            if (switchBtn) {
+                switchBtn.textContent = isDark ? '☀️' : '🌙';
+            }
+
+            const toggle = document.querySelector('.menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (toggle && navLinks) {
+                toggle.addEventListener('click', () => {
+                    navLinks.classList.toggle('open');
+                });
+            }
+            
+            // Auto fade out alerts after 5 seconds
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    alert.style.transition = 'opacity 0.6s ease';
+                    alert.style.opacity = '0';
+                    setTimeout(() => alert.remove(), 600);
+                }, 5000);
+            });
+        });
+
+        // Theme Toggle Function
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('dark-mode', isDark);
+            
+            const switchBtn = document.getElementById('theme-switch');
+            if (switchBtn) {
+                switchBtn.textContent = isDark ? '☀️' : '🌙';
+            }
+        }
+
+        // Chatbot Functions
+        function toggleChatWindow() {
+            const win = document.getElementById('chat-window');
+            win.classList.toggle('open');
+        }
+
+        function appendMsg(text, sender) {
+            const body = document.getElementById('chat-body');
+            const msg = document.createElement('div');
+            msg.className = `chat-msg ${sender}`;
+            msg.innerHTML = text;
+            body.appendChild(msg);
+            body.scrollTop = body.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const body = document.getElementById('chat-body');
+            const indicator = document.createElement('div');
+            indicator.className = 'typing-indicator';
+            indicator.id = 'typing-indicator';
+            indicator.innerHTML = '<span></span><span></span><span></span>';
+            body.appendChild(indicator);
+            body.scrollTop = body.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const ind = document.getElementById('typing-indicator');
+            if (ind) ind.remove();
+        }
+
+        function generateBotResponse(input) {
+            const text = input.toLowerCase();
+            
+            // Occasion checks
+            if (text.includes('anniversary') || text.includes('wedding')) {
+                return "For <strong>Anniversaries & Weddings</strong>, I highly recommend our <strong>Signature Giftbox</strong> (₹1,500) which contains ribbon roses, premium chocolates, cosmetics, and custom polaroids. Alternatively, our <strong>Rose Bouquet</strong> (₹500) made of handcrafted ribbon roses makes a stunning romantic gesture.";
+            }
+            if (text.includes('birthday') || text.includes('festival') || text.includes('occasion') || text.includes('graduation')) {
+                return "For <strong>Birthdays & Festive Occasions</strong>, our <strong>12-Month Detachable Photo Calendar</strong> (₹400) is a bestseller! You can personalize it with custom photos. Our <strong>Chocolates Bouquet</strong> (₹500) is also a delightful sweet treat.";
+            }
+            if (text.includes('personalized') || text.includes('custom') || text.includes('personalise')) {
+                return "We offer premium customization! You can customize our <strong>Photo Calendar</strong> (₹400), our <strong>A4 Photo Frame</strong> (₹200) in black and white art, or get a package of high-quality <strong>Polaroid Prints</strong> (₹80 for 3 prints).";
+            }
+            
+            // Price checks
+            if (text.includes('price') || text.includes('cost') || text.includes('how much') || text.includes('rate')) {
+                return "Here is our boutique price range:<br>✦ <strong>Polaroids</strong> (₹80)<br>✦ <strong>Photo Frame</strong> (₹200)<br>✦ <strong>Photo Calendar</strong> (₹400)<br>✦ <strong>Rose Bouquet</strong> (₹500)<br>✦ <strong>Chocolates Bouquet</strong> (₹500)<br>✦ <strong>Signature Giftbox</strong> (₹1,500)<br><em>All orders include FREE premium wrapping and delivery!</em>";
+            }
+            
+            // Location checks
+            if (text.includes('location') || text.includes('where') || text.includes('ship') || text.includes('deliver') || text.includes('city') || text.includes('delivery')) {
+                return "We deliver to <strong>all cities across India</strong>! This includes Mumbai, Delhi, Bangalore, Kolkata, Chennai, Pune, Hyderabad, and many more. All packages are insured and fragile-packed, arriving at your doorstep in 3-5 days.";
+            }
+            
+            // Quality checks
+            if (text.includes('quality') || text.includes('material') || text.includes('paper') || text.includes('ribbon')) {
+                return "Quality is our top priority. We use: <br>✦ Handcrafted ribbon roses that never fade.<br>✦ Premium card-boxes wrapped in signature velvet cloth.<br>✦ High-density 250gsm paper for polaroids and calendars.<br>✦ Hardwood supports for calendar frames.";
+            }
+            
+            // Greeting checks
+            if (text.includes('hello') || text.includes('hi') || text.includes('hey') || text.includes('welcome') || text.includes('greet')) {
+                return "Hello! How can I help you choose a suitable gift today? You can ask me about occasions, pricing, delivery locations, or material quality.";
+            }
+
+            // Thank you checks
+            if (text.includes('thank') || text.includes('thanks') || text.includes('helpful')) {
+                return "You are very welcome! It is my absolute pleasure. Let me know if you would like me to assist you with checkout or other gift recommendations!";
+            }
+
+            // Fallback answer
+            return "That's a great question! For specific inquiries, you can reach out directly via email at <strong>paramasartistry2025@gmail.com</strong> or phone at <strong>+91 89022 16714</strong>. I can also help you with catalog pricing, occasions, or shipping locations. Try asking: 'Price list of gifts' or 'Suggest birthday gift'.";
+        }
+
+        function sendSuggested(query) {
+            appendMsg(query, 'user');
+            showTypingIndicator();
+            setTimeout(() => {
+                removeTypingIndicator();
+                const reply = generateBotResponse(query);
+                appendMsg(reply, 'bot');
+            }, 1000);
+        }
+
+        function handleChatSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('chat-input');
+            const query = input.value.trim();
+            if (!query) return;
+            
+            appendMsg(query, 'user');
+            input.value = '';
+            
+            showTypingIndicator();
+            setTimeout(() => {
+                removeTypingIndicator();
+                const reply = generateBotResponse(query);
+                appendMsg(reply, 'bot');
+            }, 1000);
+        }
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

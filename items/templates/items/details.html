@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ gift.name }} | Parama's ARTISTRY Luxury Detail{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 1200px; margin: 50px auto; padding: 0 5%; min-height: 70vh;">
+    
+    <!-- Back to Catalog Link -->
+    <a href="{% url 'home' %}" style="display: inline-flex; align-items: center; gap: 8px; color: var(--primary); font-weight: 500; margin-bottom: 30px; font-size: 0.95rem;">
+        <span style="font-size: 1.2rem;">&larr;</span> Back to Collections
+    </a>
+
+    <div class="glass-card" style="padding: 50px;">
+        <div class="detail-grid">
+            
+            <!-- Left Panel: Large Image -->
+            <div style="border-radius: var(--border-radius-md); overflow: hidden; border: 1px solid rgba(81, 60, 151, 0.08); box-shadow: var(--shadow-sm); background: #FAF9F6;">
+                <img src="{% static gift.image %}" alt="{{ gift.name }}" style="width: 100%; height: auto; display: block; object-fit: cover;">
+            </div>
+
+            <!-- Right Panel: Specifications -->
+            <div style="display: flex; flex-direction: column; height: 100%; justify-content: flex-start; padding: 10px 0;">
+                <span class="card-category" style="font-size: 0.85rem; margin-bottom: 12px; display: inline-block;">✦ {{ gift.category }} Collection</span>
+                <h1 style="font-size: 2.4rem; margin-bottom: 16px; color: var(--primary-dark); font-family: var(--font-heading); line-height: 1.2;">{{ gift.name }}</h1>
+                
+                <!-- Ratings -->
+                <div class="rating-container" style="margin-bottom: 24px;">
+                    <div class="rating-stars" style="font-size: 1.1rem; color: var(--accent);">
+                        {% for i in gift.rating_stars %}★{% endfor %}
+                    </div>
+                    <span class="rating-value" style="font-size: 1rem; font-weight: 600;">{{ gift.rating }}</span>
+                    <span style="color: var(--text-muted); font-size: 0.9rem;">(based on {{ gift.rating_count }} customer reviews)</span>
+                </div>
+
+                <div style="border-top: 1px solid rgba(81, 60, 151, 0.08); border-bottom: 1px solid rgba(81, 60, 151, 0.08); padding: 24px 0; margin-bottom: 30px;">
+                    <span class="card-price" style="font-size: 2rem; display: block; margin-bottom: 16px;">₹ {{ gift.price }}</span>
+                    <p style="color: var(--text-charcoal); font-size: 1.05rem; line-height: 1.7;">{{ gift.details }}</p>
+                </div>
+
+                <!-- Custom Gift Metadata bullet points -->
+                <ul style="list-style: none; margin-bottom: 35px; font-size: 0.9rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 8px;">
+                    <li><strong style="color: var(--primary-dark);">Availability:</strong> <span style="color: #2e7d32; font-weight: 600;">In Stock</span> (Ready to ship in 24 hours)</li>
+                    <li><strong style="color: var(--primary-dark);">Wrapping:</strong> Includes Signature Gold Wax Ribbon Box</li>
+                    <li><strong style="color: var(--primary-dark);">Shipping:</strong> Fragile air courier dispatch (tracked)</li>
+                </ul>
+
+                <!-- Action row -->
+                <div style="display: flex; gap: 16px; margin-top: auto;">
+                    <a href="{% url 'add_to_cart' gift.id %}" class="btn btn-primary" style="flex-grow: 2; padding: 15px;">
+                        🛒 Add to Shopping Cart
+                    </a>
+                    <a href="{% url 'add_to_wishlist' gift.id %}" class="btn btn-secondary" style="flex-grow: 1; padding: 15px; border-color: rgba(81, 60, 151, 0.2);">
+                        ❤ Wishlist
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const item = {
+            id: "{{ gift.id }}",
+            name: "{{ gift.name }}",
+            price: "{{ gift.price }}",
+            image: "{% static gift.image %}",
+            category: "{{ gift.category }}",
+            rating: "{{ gift.rating }}"
+        };
+        let items = JSON.parse(localStorage.getItem('recently_viewed') || '[]');
+        items = items.filter(x => x.id !== item.id);
+        items.unshift(item);
+        if (items.length > 4) items.pop();
+        localStorage.setItem('recently_viewed', JSON.stringify(items));
+    });
+</script>
+{% endblock %}
